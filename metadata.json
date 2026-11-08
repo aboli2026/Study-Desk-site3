@@ -1,0 +1,6 @@
+{
+  "name": "میز مطالعه (Study Space)",
+  "description": "محیط مطالعه، مدیریت پی‌دی‌اف، یادداشت‌برداری، پومودورو و تحلیل عملکرد - نسخه PWA آفلاین",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

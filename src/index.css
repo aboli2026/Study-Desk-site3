@@ -1,0 +1,550 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Vazirmatn', 'Vazir', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-vazir: 'Vazirmatn', 'Vazir', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --shadow-2xs: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  --shadow-xs: 0 2px 6px -1px rgba(0, 0, 0, 0.07), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 3px 10px -1px rgba(0, 0, 0, 0.08), 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 6px 20px -2px rgba(0, 0, 0, 0.09), 0 2px 7px -1px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 12px 30px -4px rgba(0, 0, 0, 0.11), 0 4px 12px -2px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 18px 40px -4px rgba(0, 0, 0, 0.14), 0 6px 16px -2px rgba(0, 0, 0, 0.07);
+  --shadow-2xl: 0 24px 54px -6px rgba(0, 0, 0, 0.18), 0 10px 22px -3px rgba(0, 0, 0, 0.09);
+}
+
+:root {
+  font-family: 'Vazirmatn', 'Vazir', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+html, body {
+  background-color: #f5f5f5;
+  color: #171717;
+  height: 100%;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  font-family: 'Vazirmatn', 'Vazir', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input, textarea, select, optgroup {
+  font-family: inherit;
+}
+
+[contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+/* Hide scrollbar for clean touch scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ==========================================================================
+   iOS Jelly & Spring Physics Engine (GPU-Accelerated for Budget Devices)
+   ========================================================================== */
+:root {
+  --ios-spring-jelly: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ios-spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ios-spring-smooth: cubic-bezier(0.32, 0.72, 0, 1);
+  --ios-spring-press: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 1. Tactile iOS Spring Button (دکمه‌های تعاملی فنری با سایه مشخص، تفکیک کامل و فیزیک جهشی اپل) */
+.ios-spring-btn {
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  box-shadow: 0 2px 7px -1px rgba(0, 0, 0, 0.08), 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+  transition: transform 0.20s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.18s ease,
+              background-color 0.12s ease,
+              color 0.12s ease,
+              border-color 0.12s ease;
+}
+
+.ios-spring-btn:hover:not(:disabled) {
+  transform: scale(1.04) translateZ(0);
+  box-shadow: 0 6px 18px -2px rgba(0, 0, 0, 0.13), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+}
+
+.ios-spring-btn:active:not(:disabled) {
+  transform: scale(0.93) translateZ(0);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  transition: transform 0.06s ease;
+}
+
+/* Primary Dark Buttons (دکمه‌های تیره تعاملی با سایه عمیق‌تر) */
+.ios-spring-btn.bg-neutral-900,
+.ios-spring-btn[class*="bg-neutral-900"],
+.ios-spring-btn.bg-black,
+.ios-spring-btn[class*="bg-black"] {
+  box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.24), 0 2px 5px -1px rgba(0, 0, 0, 0.14) !important;
+}
+
+.ios-spring-btn.bg-neutral-900:hover:not(:disabled),
+.ios-spring-btn[class*="bg-neutral-900"]:hover:not(:disabled),
+.ios-spring-btn.bg-black:hover:not(:disabled),
+.ios-spring-btn[class*="bg-black"]:hover:not(:disabled) {
+  box-shadow: 0 8px 24px -2px rgba(0, 0, 0, 0.32), 0 3px 8px -1px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* Primary Accent Buttons (دکمه‌های رنگی تعاملی مثل رز و هشدار) */
+.ios-spring-btn.bg-rose-600,
+.ios-spring-btn[class*="bg-rose-600"] {
+  box-shadow: 0 4px 14px -1px rgba(225, 29, 72, 0.35), 0 2px 5px -1px rgba(225, 29, 72, 0.18) !important;
+}
+
+.ios-spring-btn.bg-rose-600:hover:not(:disabled),
+.ios-spring-btn[class*="bg-rose-600"]:hover:not(:disabled) {
+  box-shadow: 0 8px 22px -2px rgba(225, 29, 72, 0.45), 0 3px 8px -1px rgba(225, 29, 72, 0.22) !important;
+}
+
+/* 2. Tool Capsule Item (دکمه‌های کپسول ابزار با جهش لمسی اپل بدون افت فریم) */
+.ios-spring-tool {
+  -webkit-tap-highlight-color: transparent;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: transform 0.20s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.18s ease,
+              background-color 0.12s ease,
+              color 0.12s ease;
+}
+
+.ios-spring-tool:hover:not(:disabled) {
+  transform: scale(1.06) translateZ(0);
+  box-shadow: 0 4px 14px -1px rgba(0, 0, 0, 0.13), 0 1px 4px -1px rgba(0, 0, 0, 0.07);
+}
+
+.ios-spring-tool:active:not(:disabled) {
+  transform: scale(0.90) translateZ(0);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  transition: transform 0.06s ease;
+}
+
+/* 3. Card Spring (کارت‌های تعاملی با فونت شارپ، بدون بلور با ترنزیشن نرم) */
+.ios-spring-card {
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  transform: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: transform 0.20s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.20s ease,
+              border-color 0.15s ease,
+              background-color 0.15s ease;
+}
+
+.ios-spring-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.10),
+              0 6px 14px -2px rgba(0, 0, 0, 0.06);
+}
+
+.ios-spring-card:active {
+  transform: translateY(0) scale(0.99);
+  box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.08);
+  transition: transform 0.07s ease;
+}
+
+/* 3.1 Modern Elevation Utilities (سایه‌های مشخص و مدرن بدون بوردرهای نازک بیرنگ) */
+.modern-panel {
+  border: none !important;
+  box-shadow: 0 16px 38px -4px rgba(0, 0, 0, 0.14), 0 6px 16px -2px rgba(0, 0, 0, 0.10) !important;
+}
+
+.modern-card-elevated {
+  border: none !important;
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -1px rgba(0, 0, 0, 0.14) !important;
+}
+
+.modern-card-elevated-hover {
+  border: none !important;
+  box-shadow: 0 10px 24px -3px rgba(0, 0, 0, 0.11), 0 3px 8px -1px rgba(0, 0, 0, 0.12) !important;
+  transition: box-shadow 0.22s ease, transform 0.18s ease;
+}
+
+.modern-card-elevated-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 42px -4px rgba(0, 0, 0, 0.18), 0 8px 18px -2px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* 4. Origin Extend & Collapse System (اکستند شدن پنجره و پاپ‌اور با جهش فنری مستقیم از خود دکمه) */
+.ios-popover-anchor {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.ios-popover-bubble {
+  transform-origin: bottom center;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  max-width: calc(100vw - 24px) !important;
+  transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.22s ease,
+              visibility 0.32s ease;
+}
+
+.ios-popover-bubble-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) translateZ(0) !important;
+  pointer-events: auto !important;
+}
+
+.ios-popover-bubble-closed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(20px) scale(0.16) translateZ(0) !important;
+  pointer-events: none !important;
+  transition: transform 0.20s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.16s ease,
+              visibility 0.20s ease !important;
+}
+
+/* Dynamic Capsule Position Adaptations for Popovers */
+.capsule-top .ios-popover-anchor {
+  bottom: auto;
+  top: calc(100% + 12px);
+}
+.capsule-top .ios-popover-bubble {
+  transform-origin: top center;
+}
+.capsule-top .ios-popover-bubble-closed {
+  transform: translateY(-20px) scale(0.16) !important;
+}
+
+.capsule-right .ios-popover-anchor {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+.capsule-right .ios-popover-bubble {
+  transform-origin: bottom right;
+}
+.capsule-top.capsule-right .ios-popover-bubble {
+  transform-origin: top right;
+}
+
+.capsule-left .ios-popover-anchor {
+  left: 0;
+  transform: none;
+}
+.capsule-left .ios-popover-bubble {
+  transform-origin: bottom left;
+}
+.capsule-top.capsule-left .ios-popover-bubble {
+  transform-origin: top left;
+}
+
+/* Vertical Right Capsule (Anchor popovers to the left of the button) */
+.capsule-vertical-right .ios-popover-anchor {
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  right: calc(100% + 12px);
+  left: auto;
+  transform: translateY(-50%);
+  z-index: 50;
+  pointer-events: none;
+}
+.capsule-vertical-right .ios-popover-bubble {
+  transform-origin: center right;
+  max-height: min(85vh, 600px);
+  overflow-y: auto;
+}
+.capsule-vertical-right .ios-popover-bubble-closed {
+  transform: translateX(20px) scale(0.16) !important;
+}
+
+/* Vertical Left Capsule (Anchor popovers to the right of the button) */
+.capsule-vertical-left .ios-popover-anchor {
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  left: calc(100% + 12px);
+  right: auto;
+  transform: translateY(-50%);
+  z-index: 50;
+  pointer-events: none;
+}
+.capsule-vertical-left .ios-popover-bubble {
+  transform-origin: center left;
+  max-height: min(85vh, 600px);
+  overflow-y: auto;
+}
+.capsule-vertical-left .ios-popover-bubble-closed {
+  transform: translateX(-20px) scale(0.16) !important;
+}
+
+/* Downward Dropdown Popover (برای منوهای کشویی زیر دکمه‌ها با انیمیشن جهش ژله‌ای اپل) */
+.ios-popover-dropdown {
+  transform-origin: top right;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.22s ease,
+              visibility 0.3s ease;
+}
+.ios-popover-dropdown-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+.ios-popover-dropdown-closed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-14px) scale(0.90) !important;
+  pointer-events: none !important;
+}
+
+/* Legacy & Custom Origin Extend Classes */
+.ios-origin-extend {
+  transform-origin: bottom center;
+  backface-visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.34, 1.42, 0.64, 1),
+              opacity 0.22s ease,
+              visibility 0.3s ease;
+}
+
+.ios-popover-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+  pointer-events: auto !important;
+}
+
+.ios-popover-closed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(20px) scale(0.16) !important;
+  pointer-events: none !important;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.16s ease,
+              visibility 0.2s ease !important;
+}
+
+.ios-popover-closed-top {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: translateY(-20px) scale(0.16) !important;
+  pointer-events: none !important;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.16s ease,
+              visibility 0.2s ease !important;
+}
+
+/* ==========================================================================
+   Apple Capsule Tool Settings Popover Physics (الگوی مرجع یکپارچه برای تمامی انیمیشن‌ها)
+   فوق‌العاده زیبا، بسیار روان، سبک، سریع و کاملاً فنری و ژله‌ای بدون کوچک‌ترین لگ یا تاخیر
+   ========================================================================== */
+
+/* 5. Keyframes based on Capsule Tool Settings Popover with Apple Spring & Jelly Physics (ورود جهشی ژله‌ای و فنری سبک و روان) */
+@keyframes ios-capsule-jelly-appear {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.72, 0.72, 1) translateY(16px) translateZ(0);
+  }
+  52% {
+    opacity: 1;
+    transform: scale3d(1.055, 1.055, 1) translateY(-3px) translateZ(0);
+  }
+  76% {
+    transform: scale3d(0.984, 0.984, 1) translateY(1px) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1) translateY(0) translateZ(0);
+  }
+}
+
+/* برای پنجره راست‌کلیک، منوهای کشویی، کارت‌های شناور، اعلان‌ها و پاپ‌اورها */
+.animate-ios-jelly,
+.animate-ios-capsule,
+.animate-ios-popover-open {
+  animation: ios-capsule-jelly-appear 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* برای پنجره‌های مودال و بزرگ (دقیقاً با همان فیزیک فنری و ژله‌ای تنظیمات کپسول با بازشدن روان) */
+@keyframes ios-modal-jelly-appear {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.82, 0.82, 1) translateY(22px) translateZ(0);
+  }
+  54% {
+    opacity: 1;
+    transform: scale3d(1.036, 1.036, 1) translateY(-4px) translateZ(0);
+  }
+  78% {
+    transform: scale3d(0.99, 0.99, 1) translateY(1px) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-ios-modal {
+  animation: ios-modal-jelly-appear 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* برای اکستند شدن کارت‌های یادداشت (باز شدن فنری و ژله‌ای مشابه تنظیمات ابزار) */
+@keyframes ios-card-jelly-expand {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.92, 0.92, 1) translateY(-8px) translateZ(0);
+  }
+  55% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1) translateY(2px) translateZ(0);
+  }
+  78% {
+    transform: scale3d(0.992, 0.992, 1) translateY(0) translateZ(0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-ios-card-expand {
+  animation: ios-card-jelly-expand 0.20s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .ios-spring-btn,
+  .ios-spring-tool,
+  .ios-spring-card,
+  .ios-origin-extend,
+  .ios-origin-extend-top,
+  .animate-ios-jelly,
+  .animate-ios-modal {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* 6. Universal Minimal Apple Slider (مینیمال، هماهنگ و بدون بیرون‌زدگی ناموزون) */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 9999px;
+  touch-action: none;
+}
+
+/* WebKit (Chrome, Safari, iOS, Edge) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transform: translateZ(0);
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.1);
+  cursor: grabbing;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]:active::-moz-range-thumb {
+  transform: scale(1.1);
+  cursor: grabbing;
+}
+
+/* Guaranteed Hand Tool & Panning Cursors for PDF reading canvas (Embedded SVG Data URI for 100% offline & packaged app resilience) */
+.hand-tool-container,
+.hand-tool-container canvas,
+.hand-tool-container .pdf-page-container {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 512 512'%3E%3Cpath d='M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 272c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4s-14.6 41.3 1.4 56.6L124.8 448c43.1 41.1 100.4 64 160 64l19.2 0c97.2 0 176-78.8 176-176l0-208c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 272c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4s-14.6 41.3 1.4 56.6L124.8 448c43.1 41.1 100.4 64 160 64l19.2 0c97.2 0 176-78.8 176-176l0-208c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 176c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208z' fill='rgba(0,0,0,0.25)' transform='translate(10, 14)'/%3E%3Cpath d='M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 272c0 1.5 0 3.1 .1 4.6L67.6 283c-16-15.2-41.3-14.6-56.6 1.4s-14.6 41.3 1.4 56.6L124.8 448c43.1 41.1 100.4 64 160 64l19.2 0c97.2 0 176-78.8 176-176l0-208c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-176c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 176c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208z' fill='%23FFFFFF' stroke='%2318181B' stroke-width='34' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E") 10 10, grab !important;
+}
+
+body.hand-tool-panning,
+body.hand-tool-panning *,
+.hand-tool-container.is-panning,
+.hand-tool-container.is-panning * {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 512 512'%3E%3Cpath d='M192 0c17.7 0 32 14.3 32 32l0 112-64 0 0-112c0-17.7 14.3-32 32-32zM64 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80-64 0 0-80zm192 0c0-17.7 14.3-32 32-32s32 14.3 32 32l0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96zm96 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64zm-96 88l0-.6c9.4 5.4 20.3 8.6 32 8.6c13.2 0 25.4-4 35.6-10.8c8.7 24.9 32.5 42.8 60.4 42.8c11.7 0 22.6-3.1 32-8.6l0 8.6c0 52.3-25.1 98.8-64 128l0 96c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-78.4c-17.3-7.9-33.2-18.8-46.9-32.5L69.5 357.5C45.5 333.5 32 300.9 32 267l0-27c0-35.3 28.7-64 64-64l88 0c22.1 0 40 17.9 40 40s-17.9 40-40 40l-56 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l56 0c39.8 0 72-32.2 72-72z' fill='rgba(0,0,0,0.25)' transform='translate(42, 14)'/%3E%3Cg transform='translate(32, 0)'%3E%3Cpath d='M192 0c17.7 0 32 14.3 32 32l0 112-64 0 0-112c0-17.7 14.3-32 32-32zM64 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 80-64 0 0-80zm192 0c0-17.7 14.3-32 32-32s32 14.3 32 32l0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96zm96 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64zm-96 88l0-.6c9.4 5.4 20.3 8.6 32 8.6c13.2 0 25.4-4 35.6-10.8c8.7 24.9 32.5 42.8 60.4 42.8c11.7 0 22.6-3.1 32-8.6l0 8.6c0 52.3-25.1 98.8-64 128l0 96c0 17.7-14.3 32-32 32l-160 0c-17.7 0-32-14.3-32-32l0-78.4c-17.3-7.9-33.2-18.8-46.9-32.5L69.5 357.5C45.5 333.5 32 300.9 32 267l0-27c0-35.3 28.7-64 64-64l88 0c22.1 0 40 17.9 40 40s-17.9 40-40 40l-56 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l56 0c39.8 0 72-32.2 72-72z' fill='%23FFFFFF' stroke='%2318181B' stroke-width='34' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E") 10 10, grabbing !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* Interactive elements inside reading container always keep their natural pointer cursor */
+.hand-tool-container button,
+.hand-tool-container .cursor-pointer,
+.hand-tool-container input,
+.hand-tool-container select,
+.hand-tool-container textarea,
+.hand-tool-container [role="button"],
+.hand-tool-container a {
+  cursor: pointer !important;
+}
+
+/* Sleek Independent Column Scrollbars */
+.custom-column-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(163, 163, 163, 0.45) transparent;
+}
+.custom-column-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-column-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-column-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(163, 163, 163, 0.35);
+  border-radius: 9999px;
+}
+.custom-column-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(115, 115, 115, 0.6);
+}
+
