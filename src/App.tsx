@@ -1,12 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Settings, FileText } from 'lucide-react';
-import { NoteItem } from './types';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { Settings, FileText, StickyNote } from 'lucide-react';
+import { NoteItem, StudyFile, StickyNoteItem } from './types';
 import { NotesView } from './components/NotesView';
 import { SettingsView } from './components/SettingsView';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import {
   getAllNotesFromStorage,
   saveAllNotesToStorage,
+  getAllStudyFiles,
+  saveFileEditsToStorage,
+  getFileEditsFromStorage,
 } from './utils/fileStorage';
 
 const STORAGE_KEYS = {
@@ -16,6 +19,7 @@ const STORAGE_KEYS = {
 export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [targetNoteIdToOpen, setTargetNoteIdToOpen] = useState<string | null>(null);
+  const [studyFiles, setStudyFiles] = useState<StudyFile[]>([]);
 
   // Load notes from localStorage as initial state, then hydrate from IndexedDB
   const [notes, setNotes] = useState<NoteItem[]>(() => {
@@ -35,20 +39,29 @@ export default function App() {
     ];
   });
 
-  // Hydrate notes from IndexedDB on startup (with automatic fallback to localStorage)
+  // Calculate total sticky notes across all study files
+  const totalStickyNotesCount = useMemo(() => {
+    return studyFiles.reduce((acc, f) => acc + (f.stickyNotes?.length || 0), 0);
+  }, [studyFiles]);
+
+  // Hydrate notes and study files from IndexedDB on startup
   useEffect(() => {
     let isCancelled = false;
-    const loadNotes = async () => {
+    const loadAllData = async () => {
       try {
-        const idbNotes = await getAllNotesFromStorage();
+        const [idbNotes, idbFiles] = await Promise.all([
+          getAllNotesFromStorage(),
+          getAllStudyFiles(),
+        ]);
         if (isCancelled) return;
+
         if (idbNotes && idbNotes.length > 0) {
           setNotes(idbNotes);
           try {
             localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(idbNotes));
           } catch {}
         } else {
-          // If IndexedDB empty, populate with initial notes
+          // If IndexedDB empty, check localStorage
           const savedLocal = localStorage.getItem(STORAGE_KEYS.NOTES);
           if (savedLocal) {
             const parsed = JSON.parse(savedLocal);
@@ -58,12 +71,16 @@ export default function App() {
             }
           }
         }
+
+        if (idbFiles && idbFiles.length > 0) {
+          setStudyFiles(idbFiles);
+        }
       } catch (err) {
-        console.warn('Failed to load notes from IndexedDB:', err);
+        console.warn('Failed to load notes or files from IndexedDB:', err);
       }
     };
 
-    loadNotes();
+    loadAllData();
     return () => {
       isCancelled = true;
     };
@@ -121,12 +138,82 @@ export default function App() {
     [notes, persistNotes, targetNoteIdToOpen]
   );
 
+  // Update a single sticky note inside a study file and persist
+  const handleUpdateStickyNote = useCallback(
+    async (fileId: string, stickyNote: StickyNoteItem) => {
+      setStudyFiles((prevFiles) =>
+        prevFiles.map((file) => {
+          if (file.id !== fileId) return file;
+          const currentNotes = file.stickyNotes || [];
+          const exists = currentNotes.some((sn) => sn.id === stickyNote.id);
+          const updatedNotes = exists
+            ? currentNotes.map((sn) => (sn.id === stickyNote.id ? stickyNote : sn))
+            : [...currentNotes, stickyNote];
+          return { ...file, stickyNotes: updatedNotes };
+        })
+      );
+
+      try {
+        const edits = await getFileEditsFromStorage(fileId);
+        const currentNotes = edits?.stickyNotes || [];
+        const exists = currentNotes.some((sn) => sn.id === stickyNote.id);
+        const updatedNotes = exists
+          ? currentNotes.map((sn) => (sn.id === stickyNote.id ? stickyNote : sn))
+          : [...currentNotes, stickyNote];
+
+        await saveFileEditsToStorage(fileId, {
+          ...(edits || { fileId, pageStrokes: {}, updatedAt: new Date().toISOString() }),
+          stickyNotes: updatedNotes,
+          updatedAt: new Intl.DateTimeFormat('fa-IR').format(new Date()),
+        });
+      } catch (err) {
+        console.warn('Failed to update sticky note in storage:', err);
+      }
+    },
+    []
+  );
+
+  // Delete a single sticky note from a study file and persist
+  const handleDeleteStickyNote = useCallback(
+    async (fileId: string, stickyNoteId: string) => {
+      setStudyFiles((prevFiles) =>
+        prevFiles.map((file) => {
+          if (file.id !== fileId) return file;
+          return {
+            ...file,
+            stickyNotes: (file.stickyNotes || []).filter((sn) => sn.id !== stickyNoteId),
+          };
+        })
+      );
+
+      try {
+        const edits = await getFileEditsFromStorage(fileId);
+        if (edits) {
+          await saveFileEditsToStorage(fileId, {
+            ...edits,
+            stickyNotes: (edits.stickyNotes || []).filter((sn) => sn.id !== stickyNoteId),
+            updatedAt: new Intl.DateTimeFormat('fa-IR').format(new Date()),
+          });
+        }
+      } catch (err) {
+        console.warn('Failed to delete sticky note in storage:', err);
+      }
+    },
+    []
+  );
+
   const handleRefreshAllData = useCallback(async () => {
     try {
-      const idbNotes = await getAllNotesFromStorage();
+      const [idbNotes, idbFiles] = await Promise.all([
+        getAllNotesFromStorage(),
+        getAllStudyFiles(),
+      ]);
       if (idbNotes && idbNotes.length > 0) {
         setNotes(idbNotes);
         localStorage.setItem(STORAGE_KEYS.NOTES, JSON.stringify(idbNotes));
+      }
+      if (idbFiles) {
+        setStudyFiles(idbFiles);
       }
     } catch (e) {
       console.warn('Refresh error:', e);
@@ -154,9 +241,17 @@ export default function App() {
             <FileText className="w-4 h-4 text-blue-400" />
           </div>
           <h1 className="text-xs sm:text-sm font-bold text-neutral-900">دفترچه یادداشت</h1>
-          <span className="text-[10px] sm:text-[11px] font-mono font-bold bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded-full">
-            {notes.length}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] sm:text-[11px] font-mono font-bold bg-neutral-100 text-neutral-600 px-2 py-0.5 rounded-full" title="تعداد یادداشت‌ها">
+              {notes.length} یادداشت
+            </span>
+            {totalStickyNotesCount > 0 && (
+              <span className="text-[10px] sm:text-[11px] font-mono font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-1" title="تعداد استیکی‌نوت‌ها">
+                <StickyNote className="w-3 h-3 text-amber-600" />
+                {totalStickyNotesCount} استیکی
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
@@ -165,7 +260,7 @@ export default function App() {
             type="button"
             onClick={() => setIsSettingsOpen(true)}
             className="w-8 h-8 rounded-xl bg-neutral-100 hover:bg-neutral-200 active:scale-90 text-neutral-700 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
-            title="تنظیمات، اکسپورت و ایمپورت نوت‌ها"
+            title="تنظیمات، پشتیبان‌گیری، استیکی‌نوت‌ها و یادداشت‌ها"
             aria-label="تنظیمات و پشتیبان‌گیری"
           >
             <Settings className="w-4 h-4 text-neutral-700" />
@@ -180,6 +275,9 @@ export default function App() {
           onAddNote={handleAddNote}
           onUpdateNote={handleUpdateNote}
           onDeleteNote={handleDeleteNote}
+          studyFiles={studyFiles}
+          onUpdateStickyNote={handleUpdateStickyNote}
+          onDeleteStickyNote={handleDeleteStickyNote}
           initialNoteId={targetNoteIdToOpen}
         />
       </main>
@@ -197,6 +295,8 @@ export default function App() {
             <SettingsView
               notesCount={notes.length}
               notes={notes}
+              studyFiles={studyFiles}
+              stickyNotesCount={totalStickyNotesCount}
               onClose={() => setIsSettingsOpen(false)}
               onDataRestored={handleRefreshAllData}
             />
