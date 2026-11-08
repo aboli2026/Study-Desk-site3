@@ -2937,7 +2937,7 @@ export const NotesOverview: React.FC<NotesOverviewProps> = ({
       {/* Floating Bottom Navigation Capsule with the 3 main options (یادداشت‌ها / تسک‌ها / استیکی‌نوت‌ها) */}
       <nav
         aria-label="بخش‌های اصلی برنامه"
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 bg-white/95 backdrop-blur-md p-1.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.16)] border border-neutral-200/90 grid grid-cols-3 gap-1 select-none w-[calc(100%-1.5rem)] max-w-[370px] ring-1 ring-black/5"
+        className="absolute bottom-2 left-1/2 -translate-x-1/2 z-40 bg-white/95 backdrop-blur-md p-1.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.16)] border border-neutral-200/90 grid grid-cols-3 gap-1 select-none w-[calc(100%-1.5rem)] max-w-[370px] ring-1 ring-black/5"
       >
         {/* 1. یادداشت‌ها */}
         <button
